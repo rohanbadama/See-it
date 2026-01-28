@@ -4,167 +4,270 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For Someone Special 💖</title>
+
 <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(180deg, #2b0a2f, #3d0f3f);
-  color: white;
-  text-align: center;
-  overflow: hidden;
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:radial-gradient(circle at top,#4b0d4f,#1f0524);
+  color:white;
+  text-align:center;
+  overflow:hidden;
 }
 
-.screen {
-  display: none;
-  height: 100vh;
-  padding: 30px;
-  box-sizing: border-box;
-  animation: fadeIn 1s ease forwards;
+/* Floating hearts background */
+.hearts span{
+  position:absolute;
+  bottom:-50px;
+  font-size:20px;
+  animation:rise 8s linear infinite;
+}
+@keyframes rise{
+  from{transform:translateY(0);opacity:1;}
+  to{transform:translateY(-110vh);opacity:0;}
 }
 
-.active { display: block; }
+.screen{
+  display:none;
+  height:100vh;
+  padding:30px;
+  box-sizing:border-box;
+  animation:fade 1s ease forwards;
+}
+.active{display:block;}
 
-button {
-  background: linear-gradient(45deg, #ff4d88, #ff6fa5);
-  border: none;
-  padding: 12px 25px;
-  border-radius: 30px;
-  color: white;
-  font-size: 18px;
-  margin-top: 20px;
-  cursor: pointer;
+@keyframes fade{from{opacity:0;transform:translateY(20px);}to{opacity:1;}}
+
+button{
+  background:linear-gradient(45deg,#ff4d88,#ff85a2);
+  border:none;
+  padding:12px 28px;
+  border-radius:30px;
+  color:white;
+  font-size:18px;
+  margin-top:20px;
+  cursor:pointer;
+  box-shadow:0 0 10px #ff4d88;
 }
 
-@keyframes fadeIn {
-  from {opacity:0; transform: translateY(20px);}
-  to {opacity:1; transform: translateY(0);}
+/* Cat */
+.cat{
+  width:130px;
+  animation:float 2.5s ease-in-out infinite;
 }
-
-/* Cute floating animation */
-.float {
-  animation: float 2s ease-in-out infinite;
-}
-@keyframes float {
+@keyframes float{
   0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
+  50%{transform:translateY(-15px)}
 }
 
-/* Progress bar */
-.bar {
-  width: 80%;
-  height: 15px;
-  background: #fff2;
-  border-radius: 10px;
-  margin: 20px auto;
-  overflow: hidden;
-}
-.fill {
-  height: 100%;
-  width: 0%;
-  background: hotpink;
-  transition: width 0.2s;
+/* Shake */
+.shake{animation:shake 0.4s linear 3;}
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-8px)}
+  50%{transform:translateX(8px)}
+  75%{transform:translateX(-8px)}
+  100%{transform:translateX(0)}
 }
 
-/* Tap reveal boxes */
-.reveal-box {
-  background: #ffffff10;
-  padding: 15px;
-  margin: 10px;
-  border-radius: 15px;
-  cursor: pointer;
+/* Meter */
+.bar{width:80%;height:15px;background:#ffffff22;margin:20px auto;border-radius:10px;overflow:hidden;}
+.fill{height:100%;width:0;background:#ff4d88;transition:width 0.2s;}
+
+.reveal-box{
+  background:#ffffff15;
+  padding:15px;
+  margin:12px;
+  border-radius:15px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.revealed{background:#ff4d88;}
+
+.typing{
+  border-right:2px solid white;
+  white-space:normal;
+  overflow:hidden;
+  animation:fadeText 5s ease forwards;
+}
+@keyframes fadeText{from{opacity:0}to{opacity:1}}
+
+.love-text{
+  font-size:44px;
+  color:#ff9acb;
+  animation:glow 1.5s infinite alternate;
+}
+@keyframes glow{
+  from{text-shadow:0 0 10px #ff4da6;}
+  to{text-shadow:0 0 35px #ff99cc;}
 }
 
-.typing {
-  border-right: 2px solid white;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-  animation: typing 4s steps(40,end) forwards;
+/* Sparkle trail */
+.sparkle{
+  position:fixed;
+  pointer-events:none;
+  font-size:14px;
+  animation:sparkleFade 1s linear forwards;
 }
-@keyframes typing { to { width: 100% } }
+@keyframes sparkleFade{to{transform:translateY(-20px);opacity:0;}}
 
-.love-text {
-  font-size: 40px;
-  color: #ff9acb;
-  animation: glow 1.5s infinite alternate;
+/* Heart burst */
+.burst-heart{
+  position:fixed;
+  font-size:16px;
+  animation:burst 800ms ease-out forwards;
 }
-@keyframes glow {
-  from { text-shadow: 0 0 10px #ff4da6; }
-  to { text-shadow: 0 0 25px #ff99cc; }
+@keyframes burst{
+  to{transform:translateY(-40px) scale(1.5);opacity:0;}
 }
 </style>
 </head>
 <body>
 
-<!-- Screen 1 -->
+<div class="hearts"></div>
+
+<!-- SCREEN 1 -->
 <div class="screen active" id="s1">
-  <h1 class="float">Hey cutiepie 🥰</h1>
+  <img src="https://media.tenor.com/8QfKZ5n1nEoAAAAi/cute-cat.gif" class="cat">
+  <h1>Hey cutiepie 🥰</h1>
   <p>Do you even know how cute you are?</p>
-  <button onclick="nextScreen(2)">Let's check 💖</button>
+  <button onclick="startExperience(event)">Let's check 💖</button>
 </div>
 
-<!-- Screen 2 -->
+<!-- SCREEN 2 -->
 <div class="screen" id="s2">
   <h2>Measuring your cuteness... ⏳</h2>
   <h1 id="percent">0%</h1>
   <div class="bar"><div class="fill" id="fill"></div></div>
   <p id="warn" style="display:none;">⚠️ WARNING: Too cute to handle!</p>
-  <button id="contBtn" style="display:none;" onclick="nextScreen(3)">Continue ➜</button>
+  <button id="next2" style="display:none;" onclick="next(3,event)">Continue ➜</button>
 </div>
 
-<!-- Screen 3 -->
+<!-- SCREEN 3 -->
 <div class="screen" id="s3">
   <h2>Tap each one to reveal 💌</h2>
-  <div class="reveal-box" onclick="reveal(this)">I'm really sorry if I ever hurt you even a little 🥺</div>
-  <div class="reveal-box" onclick="reveal(this)">You mean more to me than I can ever explain 💖</div>
-  <div class="reveal-box" onclick="reveal(this)">Please forgive me… I never want to lose you 💔</div>
-  <button onclick="nextScreen(4)">See more ➜</button>
+  <div class="reveal-box" onclick="reveal(this,1,event)">Tap to reveal message</div>
+  <div class="reveal-box" onclick="reveal(this,2,event)">Tap to reveal message</div>
+  <div class="reveal-box" onclick="reveal(this,3,event)">Tap to reveal message</div>
+  <button onclick="next(4,event)">See more ➜</button>
 </div>
 
-<!-- Screen 4 -->
+<!-- SCREEN 4 -->
 <div class="screen" id="s4">
   <h2>A little note for you 💗</h2>
   <p>I’m truly sorry for every moment I made you feel sad. You deserve only love, respect, and happiness 🌹</p>
-  <button onclick="nextScreen(5)">Open my heart ➜</button>
+  <button onclick="next(5,event)">Open my heart ➜</button>
 </div>
 
-<!-- Screen 5 -->
+<!-- SCREEN 5 -->
 <div class="screen" id="s5">
-  <h2 class="float">🥺</h2>
-  <p class="typing">I never meant to hurt you... You are the most precious person in my life.</p>
-  <button onclick="nextScreen(6)">Last thing… ❤️</button>
+  <img src="https://media.tenor.com/x9vYpQ4R0vAAAAAi/crying-cat.gif" class="cat">
+  <p class="typing">
+    I never meant to hurt you, not even in the smallest way.  
+    If my words or actions ever made you feel unimportant, ignored, or unloved, I am deeply sorry.  
+    You are the most precious part of my life, the person who makes my world softer, warmer, and brighter.  
+    Losing your smile, even for a moment, hurts me more than I can explain.  
+    Please forgive me, because my heart has always been yours and always will be. 💔💖  
+    No matter what happens, my care for you will never fade.
+  </p>
+  <button onclick="next(6,event)">Last thing… ❤️</button>
 </div>
 
-<!-- Screen 6 -->
+<!-- SCREEN 6 -->
 <div class="screen" id="s6">
   <h1 class="love-text">I Love You ❤️</h1>
 </div>
 
-<script>
-function nextScreen(n){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('s'+n).classList.add('active');
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a73467.mp3" type="audio/mp3">
+</audio>
 
-  if(n===2) startMeter();
+<script>
+const music=document.getElementById("bgMusic");
+
+function startExperience(e){
+  heartBurst(e);
+  music.play();
+  next(2);
 }
 
-function startMeter(){
+function next(n,e){
+  heartBurst(e);
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  if(n===2) meter();
+  vibrate();
+}
+
+function meter(){
   let p=0;
-  let interval=setInterval(()=>{
+  let i=setInterval(()=>{
     p+=2;
-    document.getElementById('percent').innerText=p+"%";
-    document.getElementById('fill').style.width=p+"%";
+    percent.innerText=p+"%";
+    fill.style.width=p+"%";
     if(p>=120){
-      clearInterval(interval);
-      document.getElementById('warn').style.display="block";
-      document.getElementById('contBtn').style.display="inline-block";
+      clearInterval(i);
+      warn.style.display="block";
+      next2.style.display="inline-block";
+      document.getElementById("s2").classList.add("shake");
+      vibrate([200,100,200]);
     }
   },40);
 }
 
-function reveal(el){
-  el.style.background="#ff4d88";
+function reveal(el,num,e){
+  heartBurst(e);
+  if(!el.classList.contains("revealed")){
+    if(num===1) el.innerText="I'm really sorry if I ever hurt you even a little 🥺";
+    if(num===2) el.innerText="You mean more to me than I can ever explain 💖";
+    if(num===3) el.innerText="Please forgive me… I never want to lose you 💔";
+    el.classList.add("revealed");
+    vibrate();
+  }
 }
+
+function vibrate(pattern=100){
+  if(navigator.vibrate) navigator.vibrate(pattern);
+}
+
+/* Sparkle trail */
+document.addEventListener("mousemove", e=>createSparkle(e.clientX,e.clientY));
+document.addEventListener("touchmove", e=>{
+  const t=e.touches[0]; createSparkle(t.clientX,t.clientY);
+});
+function createSparkle(x,y){
+  const s=document.createElement("div");
+  s.className="sparkle";
+  s.innerHTML="✨";
+  s.style.left=x+"px";
+  s.style.top=y+"px";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),1000);
+}
+
+/* Heart burst */
+function heartBurst(e){
+  if(!e) return;
+  for(let i=0;i<6;i++){
+    const h=document.createElement("div");
+    h.className="burst-heart";
+    h.innerHTML="💖";
+    h.style.left=(e.clientX||window.innerWidth/2)+"px";
+    h.style.top=(e.clientY||window.innerHeight/2)+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),800);
+  }
+}
+
+/* Floating hearts */
+setInterval(()=>{
+  const heart=document.createElement("span");
+  heart.innerHTML="💖";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=(Math.random()*20+10)+"px";
+  document.querySelector(".hearts").appendChild(heart);
+  setTimeout(()=>heart.remove(),8000);
+},500);
 </script>
 
 </body>

@@ -13,7 +13,7 @@ body{
   color:white;
   text-align:center;
   overflow:hidden;
-  transition:background 2s linear;
+  transition:background 4s linear;
 }
 
 .screen{display:none;height:100vh;padding:30px;box-sizing:border-box;}
@@ -28,190 +28,131 @@ button{
 }
 
 .cat{font-size:80px;animation:float 2.5s ease-in-out infinite;}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes float{50%{transform:translateY(-18px)}}
 
-.bar{width:80%;height:15px;background:#ffffff22;margin:20px auto;border-radius:10px;}
-.fill{height:100%;width:0;background:#ff4d88;transition:width 0.2s;}
+.love-text{font-size:52px;color:#ff9acb;text-shadow:0 0 20px #ff4da6}
 
-.shake{animation:shake 0.4s linear 4;}
-@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-8px)}100%{transform:translateX(0)}}
+/* Typing */
+#typingText{
+  max-width:90%;
+  margin:auto;
+  font-size:18px;
+  line-height:1.6;
+  min-height:120px;
+  border-right:2px solid white;
+}
 
-.reveal-box{background:#ffffff15;padding:15px;margin:12px;border-radius:15px;cursor:pointer;transition:0.3s;}
-.revealed{background:#ff4d88;transform:scale(1.05);}
-
-.typing{border-right:2px solid white;white-space:pre-wrap;overflow:hidden;animation:typing 8s steps(160,end) forwards;width:0;margin:auto;max-width:90%;}
-@keyframes typing{to{width:100%}}
-
-.love-text{font-size:46px;color:#ff9acb;animation:glow 1.5s infinite alternate;}
-@keyframes glow{from{text-shadow:0 0 10px #ff4da6}to{text-shadow:0 0 40px #ff99cc}}
-
-.hearts span{position:absolute;bottom:-20px;font-size:18px;animation:rise 6s linear infinite;}
-@keyframes rise{to{transform:translateY(-110vh);opacity:0}}
-
-.sparkle{position:fixed;pointer-events:none;font-size:14px;animation:sparkleFade 1s linear forwards;}
-@keyframes sparkleFade{to{transform:translateY(-20px);opacity:0;}}
-
-.burst-heart{position:fixed;font-size:18px;animation:burst 800ms ease-out forwards;}
-@keyframes burst{to{transform:translateY(-40px) scale(1.8);opacity:0;}}
-
-/* SHATTER PARTICLES */
-.shard{
+/* Falling text shards */
+.text-shard{
   position:fixed;
-  width:8px;
-  height:8px;
-  background:white;
-  pointer-events:none;
-  animation:fall 2s linear forwards;
+  font-weight:bold;
+  animation:fall 5s linear forwards;
 }
 @keyframes fall{
   to{
-    transform:translateY(100vh) rotate(720deg);
+    transform:translateY(110vh) rotate(40deg);
     opacity:0;
   }
+}
+
+/* Dark fade overlay */
+#fadeOverlay{
+  position:fixed;
+  inset:0;
+  background:black;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 5s linear;
 }
 </style>
 </head>
 <body>
 
-<div class="hearts"></div>
+<div id="fadeOverlay"></div>
 
+<!-- Screen 1 -->
 <div class="screen active" id="s1">
   <div class="cat">😺</div>
   <h1>Hey cutiepie 🥰</h1>
-  <p>Do you even know how cute you are?</p>
-  <button onclick="startExperience(event)">Let's check 💖</button>
+  <p>I made something just for you...</p>
+  <button onclick="startExperience()">Open it 💖</button>
 </div>
 
-<div class="screen" id="s2">
-  <h2>Measuring your cuteness... ⏳</h2>
-  <h1 id="percent">0%</h1>
-  <div class="bar"><div class="fill" id="fill"></div></div>
-  <p id="warn" style="display:none;">⚠️ WARNING: Too cute to handle!</p>
-  <button id="next2" style="display:none;" onclick="next(3,event)">Continue ➜</button>
-</div>
-
-<div class="screen" id="s3">
-  <h2>Tap each one to reveal 💌</h2>
-  <div class="reveal-box" onclick="reveal(this,1,event)">Tap to reveal message</div>
-  <div class="reveal-box" onclick="reveal(this,2,event)">Tap to reveal message</div>
-  <div class="reveal-box" onclick="reveal(this,3,event)">Tap to reveal message</div>
-  <button onclick="next(4,event)">See more ➜</button>
-</div>
-
-<div class="screen" id="s4">
-  <h2>A little note for you 💗</h2>
-  <p>I’m truly sorry for every moment I made you feel sad. You deserve only love and happiness 🌹</p>
-  <button onclick="next(5,event)">Open my heart ➜</button>
-</div>
-
+<!-- Screen 5 Typing Screen -->
 <div class="screen" id="s5">
   <div class="cat">😿</div>
-  <p class="typing">
-I never meant to hurt you, not even in the smallest way.  
-If my words or actions ever made you feel unimportant, ignored, or unloved, I am deeply sorry.  
-You are the most precious part of my life. Please forgive me. 💔💖
-  </p>
-  <button onclick="next(6,event)">Last thing… ❤️</button>
+  <p id="typingText"></p>
+  <button onclick="next(6)">Last thing… ❤️</button>
 </div>
 
+<!-- Final Screen -->
 <div class="screen" id="s6">
-  <h1 class="love-text">I Love You ❤️</h1>
-  <button onclick="shatterScreen()">Touch My Heart 💔</button>
+  <h1 class="love-text" id="loveText">I Love You ❤️</h1>
+  <button onclick="shatterLove()">Touch My Heart 💔</button>
 </div>
 
-<audio id="music">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a73467.mp3" type="audio/mp3">
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_946f4dd0a6.mp3" type="audio/mp3">
 </audio>
 
 <script>
 const music=document.getElementById("music");
 
-function startExperience(e){
+function startExperience(){
   music.play().catch(()=>{});
-  heartBurst(e);
-  next(2);
+  next(5);
+  startTyping();
 }
 
-function next(n,e){
-  heartBurst(e);
+function next(n){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('s'+n).classList.add('active');
-  if(n===2) meter();
-  vibrate();
 }
 
-function meter(){
-  let p=0;
-  let i=setInterval(()=>{
-    p+=2;
-    percent.innerText=p+"%";
-    fill.style.width=p+"%";
-    if(p>=120){
-      clearInterval(i);
-      warn.style.display="block";
-      next2.style.display="inline-block";
-      s2.classList.add("shake");
-      vibrate([200,100,200]);
+/* ❤️ TYPEWRITER EFFECT */
+const message = `I never wanted to hurt you… not even for a second.
+If my words ever made you feel small, I’m truly sorry.
+You are the most beautiful part of my life.
+Your smile is my peace, your happiness is my wish.
+I promise to be better, to love you louder, and hold you tighter.
+Please forgive me… because my heart has always been yours. 💔`;
+
+function startTyping(){
+  let i=0;
+  const speed=35;
+  const el=document.getElementById("typingText");
+  function type(){
+    if(i<message.length){
+      el.innerHTML += message.charAt(i);
+      i++;
+      setTimeout(type,speed);
+    }else{
+      el.style.borderRight="none";
     }
-  },40);
-}
-
-function reveal(el,n,e){
-  heartBurst(e);
-  if(!el.classList.contains("revealed")){
-    if(n===1) el.innerText="I'm really sorry if I ever hurt you 🥺";
-    if(n===2) el.innerText="You mean the world to me 💖";
-    if(n===3) el.innerText="Please forgive me… I never want to lose you 💔";
-    el.classList.add("revealed");
-    vibrate();
   }
+  type();
 }
 
-function vibrate(pattern=100){ if(navigator.vibrate) navigator.vibrate(pattern); }
+/* 💔 SHATTER TEXT */
+function shatterLove(){
+  const textEl=document.getElementById("loveText");
+  const rect=textEl.getBoundingClientRect();
+  const words=["I","Love","You","❤️"];
 
-document.addEventListener("mousemove", e=>createSparkle(e.clientX,e.clientY));
-function createSparkle(x,y){
-  const s=document.createElement("div");
-  s.className="sparkle";
-  s.innerHTML="✨";
-  s.style.left=x+"px"; s.style.top=y+"px";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),1000);
-}
+  textEl.style.visibility="hidden";
 
-function heartBurst(e){
-  if(!e) return;
-  for(let i=0;i<7;i++){
-    const h=document.createElement("div");
-    h.className="burst-heart";
-    h.innerHTML="💖";
-    h.style.left=e.clientX+"px";
-    h.style.top=e.clientY+"px";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),800);
-  }
-}
+  words.forEach((word,index)=>{
+    const span=document.createElement("div");
+    span.className="text-shard";
+    span.innerText=word;
+    span.style.left=(rect.left + index*rect.width/4)+"px";
+    span.style.top=rect.top+"px";
+    span.style.fontSize="42px";
+    document.body.appendChild(span);
+  });
 
-setInterval(()=>{
-  const h=document.createElement("span");
-  h.innerHTML="💖";
-  h.style.left=Math.random()*100+"vw";
-  document.querySelector(".hearts").appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-},500);
-
-/* 💥 SHATTER EFFECT */
-function shatterScreen(){
-  document.body.style.background="black";
-  for(let i=0;i<120;i++){
-    const shard=document.createElement("div");
-    shard.className="shard";
-    shard.style.left=Math.random()*100+"vw";
-    shard.style.top=Math.random()*100+"vh";
-    shard.style.background=`hsl(${Math.random()*360},80%,70%)`;
-    document.body.appendChild(shard);
-    setTimeout(()=>shard.remove(),2000);
-  }
+  // Slow fade to black
+  document.getElementById("fadeOverlay").style.opacity=1;
 }
 </script>
 
